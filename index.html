@@ -12,6 +12,9 @@
       color: #fff;
       text-align: center;
       padding: 2rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     .container {
       max-width: 700px;
@@ -88,39 +91,18 @@
     select:hover {
       border-color: #bb66ff;
     }
-
-    /* Cores para os termos */
-    .sujeito {
-      color: #ff5555; /* vermelho */
-      font-weight: 700;
-    }
-    .acao {
-      color: #ffdd55; /* amarelo/dourado */
-      font-weight: 600;
-    }
-    .local {
-      color: #66ccff; /* azul claro */
-      font-weight: 600;
-    }
-    .estado {
-      color: #bbbbbb; /* cinza claro */
-      font-weight: 600;
-    }
-    .motivacao {
-      color: #66ff99; /* verde místico */
-      font-weight: 600;
-    }
-    .aliado {
-      color: #bb66ff; /* roxo */
-      font-weight: 600;
-    }
-    .objeto {
-      color: #ff9966; /* laranja */
-      font-weight: 600;
-    }
-    .evento {
-      color: #ff66cc; /* rosa/magenta */
-      font-weight: 600;
+    .sujeito { color: #ff5555; font-weight: 700; }
+    .acao { color: #ffdd55; font-weight: 600; }
+    .local { color: #66ccff; font-weight: 600; }
+    .estado { color: #bbbbbb; font-weight: 600; }
+    .motivacao { color: #66ff99; font-weight: 600; }
+    .aliado { color: #bb66ff; font-weight: 600; }
+    .objeto { color: #ff9966; font-weight: 600; }
+    .evento { color: #ff66cc; font-weight: 600; }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
@@ -160,13 +142,16 @@
     </div>
 
     <br />
-
     <button id="gerarBtn">🎲 Gerar Missão</button>
     <button id="copiarBtn">📋 Copiar Missão</button>
 
     <div id="missao"></div>
     <div id="sessaoVD"></div>
   </div>
+
+  <footer>
+    Criado por <strong>mx</strong>
+  </footer>
 
   <audio id="dadoAudio" src="https://freesound.org/data/previews/341/341695_6261194-lq.mp3"></audio>
 
@@ -186,24 +171,24 @@
     ];
 
     const local = [
-      "escola", "hospital", "vilarejo", "fazenda", "mata-fechada", "igreja", "estúdio de TV", "prisão",
-      "clube noturno", "biblioteca", "becos de metrópole", "arranha-céu", "grande loja de departamento",
-      "esgoto", "fábrica", "shopping center", "orfanato", "museu", "cemitério", "delegacia", "base militar",
-      "mansão", "antiga sede da Ordo Realitas", "navio", "ilha remota"
+      "Escola", "Hospital", "Vilarejo", "Fazenda", "Mata-fechada", "Igreja", "Estúdio de TV", "Prisão",
+      "Clube noturno", "Biblioteca", "Becos de metrópole", "Arranha-céu", "Grande loja de departamento", "Esgoto",
+      "Fábrica", "Shopping center", "Orfanato", "Museu", "Cemitério", "Delegacia", "Base militar", "Mansão",
+      "Antiga sede da Ordo Realitas", "Navio", "Ilha Remota"
     ];
 
-    const estado = ["com pessoas", "vazio(a)"];
+    const estado = ["habitado", "vazio/abandonado"];
 
     const motivacao = [
       "vingança", "luto profundo", "culpa por algo que aconteceu", "fé distorcida ou fanatismo",
-      "influência de forças externas", "desejo de poder", "obsessão ao Outro Lado",
-      "obsessão por respostas de algo", "medo do Outro Lado", "curiosidade ou tédio", "amor a alguém/algo"
+      "influência de forças externas", "desejo de poder", "obsessão ao Outro Lado", "obsessão por respostas de algo",
+      "medo do Outro Lado", "curiosidade ou tédio", "amor a alguém/algo"
     ];
 
     const aliado = [
       "civil alheio ao paranormal", "civil exposto ao paranormal", "ocultista arrependido",
-      "ex-agente demitido da Ordem", "antigo conhecido de um dos agentes",
-      "agente atuante da Ordo Realitas", "agente aposentado da Ordo Realitas"
+      "ex-agente demitido da Ordem", "antigo conhecido de um dos agentes", "agente atuante da Ordo Realitas",
+      "agente aposentado da Ordo Realitas"
     ];
 
     const objeto = [
@@ -216,9 +201,8 @@
       "uma doença paranormal/maldição afetando o aliado", "civis se revoltando contra eles",
       "a revelação de que o aliado era o vilão", "a revelação de que as ações do inimigo eram justificadas",
       "perda de seus equipamentos (por furto, falha tecnológica)", "ter que proteger um civil",
-      "perda de comunicação com a Ordo Realitas e acesso ao sistema de crédito",
-      "agentes da lei os importunando", "um desastre (incêndio, tempestade, furacão, blecaute, agitação civil…)",
-      "o aparecimento de um antigo inimigo"
+      "perda de comunicação com a Ordo Realitas e acesso ao sistema de crédito", "agentes da lei os importunando",
+      "um desastre (incêndio, tempestade, furacão, blecaute, agitação civil…)", "o aparecimento de um antigo inimigo"
     ];
 
     function sortear(lista) {
