@@ -166,8 +166,21 @@
       "prepara um sacrifício coletivo para o surgimento de uma criatura", "conduz experimentos bizarros"
     ];
 
+    // Ações especiais para Criaturas
+    const acaoCriatura = [
+      "está matando pessoas",
+      "está sequestrando pessoas",
+      "está causando eventos de desaparecimento inexplicáveis",
+      "está atacando animais",
+      "está infectando vítimas com uma doença paranormal",
+      "está causando alucinações em pessoas",
+      "matou um agente da Ordo Realitas",
+      "está causando desastres anômalos",
+      "está coletando itens amaldiçoados para aumentar seu poder"
+    ];
+
     const local = [
-      "Escola", "Hospital", "Vilarejo", "Fazenda", "Mata-fechada", "Igreja", "Estúdio de TV", "Prisão",
+      "Escola", "Hospital", "Vilarejo", "Fazenda", "Mata fechada", "Igreja", "Estúdio de TV", "Prisão",
       "Clube noturno", "Biblioteca", "Becos de metrópole", "Arranha-céu", "Grande loja de departamento", "Esgoto",
       "Fábrica", "Shopping center", "Orfanato", "Museu", "Cemitério", "Delegacia", "Base militar", "Mansão",
       "Antiga sede da Ordo Realitas", "Navio", "Ilha Remota"
@@ -201,16 +214,34 @@
       "um desastre (incêndio, tempestade, furacão, blecaute, agitação civil…)", "o aparecimento de um antigo inimigo"
     ];
 
+    // Locais que devem estar sempre vazios
+    const locaisVazios = ["Mata fechada", "Becos de metrópole", "Esgoto", "Cemitério", "Antiga sede da Ordo Realitas"];
+
     function sortear(lista) {
       return lista[Math.floor(Math.random() * lista.length)];
     }
 
     function gerarMissao() {
       const s = sortear(sujeito);
-      const a = sortear(acao);
+      // Se o sujeito for uma criatura, a ação vem da lista especial
+      let a;
+      if (s.includes("Criatura paranormal")) {
+        a = sortear(acaoCriatura);
+      } else {
+        a = sortear(acao);
+      }
+
       const m = sortear(motivacao);
       const l = sortear(local);
-      const e = sortear(estado);
+
+      // Se o local for um que precisa estar vazio, força o estado para vazio(a)
+      let e;
+      if (locaisVazios.includes(l)) {
+        e = "vazio(a)";
+      } else {
+        e = sortear(estado);
+      }
+
       const al = sortear(aliado);
       const o = sortear(objeto);
       const ev = sortear(evento);
