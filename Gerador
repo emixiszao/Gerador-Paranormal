@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de Missões - Ordem Paranormal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #222;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+    h1 {
+      font-family: 'Creepster', cursive;
+      font-size: 3rem;
+      margin-bottom: 0.2em;
+    }
+    button {
+      background-color: #fff;
+      color: #000;
+      border: 2px solid #ff0040;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 0.5rem 0.5rem 1rem 0.5rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #ff0040;
+      color: #fff;
+    }
+    button:active {
+      background-color: #fff !important;
+      color: #000 !important;
+    }
+    #missao {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      line-height: 1.6;
+      min-height: 80px;
+      white-space: pre-wrap;
+    }
+    #sessaoVD {
+      margin-top: 1.8rem;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: #bbb;
+    }
+    #sessaoVD .vdNum {
+      color: #bb66ff;
+      font-weight: 700;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+      display: inline-block;
+      text-align: left;
+      margin-right: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #ddd;
+    }
+    select {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1.5px solid #ff0040;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #222;
+      color: #fff;
+      min-width: 120px;
+    }
+    select:hover {
+      border-color: #bb66ff;
+    }
+
+    /* Cores para os termos */
+    .sujeito {
+      color: #ff5555; /* vermelho */
+      font-weight: 700;
+    }
+    .acao {
+      color: #ffdd55; /* amarelo/dourado */
+      font-weight: 600;
+    }
+    .local {
+      color: #66ccff; /* azul claro */
+      font-weight: 600;
+    }
+    .estado {
+      color: #bbbbbb; /* cinza claro */
+      font-weight: 600;
+    }
+    .motivacao {
+      color: #66ff99; /* verde místico */
+      font-weight: 600;
+    }
+    .aliado {
+      color: #bb66ff; /* roxo */
+      font-weight: 600;
+    }
+    .objeto {
+      color: #ff9966; /* laranja */
+      font-weight: 600;
+    }
+    .evento {
+      color: #ff66cc; /* rosa/magenta */
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎲 Gerador de Missões Paranormais</h1>
+    <p>Clique no botão para gerar uma nova missão para seu RPG de Ordem Paranormal.</p>
+
+    <div class="form-group">
+      <label for="selectQuantidade">Quantidade de Jogadores</label>
+      <select id="selectQuantidade">
+        <option value="3">3</option>
+        <option value="4" selected>4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="selectNex">NEX</label>
+      <select id="selectNex">
+        <option value="5">5% NEX</option>
+        <option value="10">10% NEX</option>
+        <option value="15">15% NEX</option>
+        <option value="20">20% NEX</option>
+        <option value="25">25% NEX</option>
+        <option value="30">30% NEX</option>
+        <option value="35">35% NEX</option>
+        <option value="40">40% NEX</option>
+        <option value="45">45% NEX</option>
+        <option value="50">50% NEX</option>
+        <option value="55">55% NEX</option>
+        <option value="60">60% NEX</option>
+        <option value="65">65% NEX</option>
+      </select>
+    </div>
+
+    <br />
+
+    <button id="gerarBtn">🎲 Gerar Missão</button>
+    <button id="copiarBtn">📋 Copiar Missão</button>
+
+    <div id="missao"></div>
+    <div id="sessaoVD"></div>
+  </div>
+
+  <audio id="dadoAudio" src="https://freesound.org/data/previews/341/341695_6261194-lq.mp3"></audio>
+
+  <script>
+    const sujeito = [
+      "Inocente curioso", "Criminoso", "Pessoa influente (magnata, político…)", "Bando cultista",
+      "Cultista independente", "Ex-agente da Ordo Realitas", "Item amaldiçoado", "Alvo antigo da Ordo Realitas",
+      "Indivíduo conectado ao passado do local", "Criatura paranormal de Sangue", "Criatura paranormal de Morte",
+      "Criatura paranormal de Conhecimento", "Criatura paranormal de Energia"
+    ];
+
+    const acao = [
+      "invocou uma criatura de propósito", "invocou uma criatura sem querer", "está sequestrando inocentes",
+      "está usando um ritual ou item amaldiçoado para cometer crimes mundanos", "está recrutando cultistas",
+      "está pesquisando um ritual perigoso", "está coletando itens amaldiçoados", "matou um agente da Ordo Realitas",
+      "prepara um sacrifício coletivo para o surgimento de uma criatura", "conduz experimentos bizarros"
+    ];
+
+    const local = [
+      "escola", "hospital", "vilarejo", "fazenda", "mata-fechada", "igreja", "estúdio de TV", "prisão",
+      "clube noturno", "biblioteca", "becos de metrópole", "arranha-céu", "grande loja de departamento",
+      "esgoto", "fábrica", "shopping center", "orfanato", "museu", "cemitério", "delegacia", "base militar",
+      "mansão", "antiga sede da Ordo Realitas", "navio", "ilha remota"
+    ];
+
+    const estado = ["com pessoas", "vazio(a)"];
+
+    const motivacao = [
+      "vingança", "luto profundo", "culpa por algo que aconteceu", "fé distorcida ou fanatismo",
+      "influência de forças externas", "desejo de poder", "obsessão ao Outro Lado",
+      "obsessão por respostas de algo", "medo do Outro Lado", "curiosidade ou tédio", "amor a alguém/algo"
+    ];
+
+    const aliado = [
+      "civil alheio ao paranormal", "civil exposto ao paranormal", "ocultista arrependido",
+      "ex-agente demitido da Ordem", "antigo conhecido de um dos agentes",
+      "agente atuante da Ordo Realitas", "agente aposentado da Ordo Realitas"
+    ];
+
+    const objeto = [
+      "arma amaldiçoada", "proteção amaldiçoada", "acessório amaldiçoado",
+      "artefato com grande valor para a Ordem", "ingrediente para um ritual poderoso"
+    ];
+
+    const evento = [
+      "o aparecimento de uma/outra criatura paranormal de grande poder", "a chegada de reforços inimigos",
+      "uma doença paranormal/maldição afetando o aliado", "civis se revoltando contra eles",
+      "a revelação de que o aliado era o vilão", "a revelação de que as ações do inimigo eram justificadas",
+      "perda de seus equipamentos (por furto, falha tecnológica)", "ter que proteger um civil",
+      "perda de comunicação com a Ordo Realitas e acesso ao sistema de crédito",
+      "agentes da lei os importunando", "um desastre (incêndio, tempestade, furacão, blecaute, agitação civil…)",
+      "o aparecimento de um antigo inimigo"
+    ];
+
+    function sortear(lista) {
+      return lista[Math.floor(Math.random() * lista.length)];
+    }
+
+    function gerarMissao() {
+      const s = sortear(sujeito);
+      const a = sortear(acao);
+      const m = sortear(motivacao);
+      const l = sortear(local);
+      const e = sortear(estado);
+      const al = sortear(aliado);
+      const o = sortear(objeto);
+      const ev = sortear(evento);
+
+      const isCriatura = s.includes("Criatura paranormal");
+
+      let frase;
+      if (isCriatura) {
+        frase = `Um(a) <span class="sujeito">${s}</span> <span class="acao">${a}</span> em um(a) <span class="local">${l}</span> que está <span class="estado">${e}</span>. Durante a investigação, o grupo terá a ajuda de um(a) <span class="aliado">${al}</span> e poderá encontrar um <span class="objeto">${o}</span>. Porém, em determinado momento os agentes serão surpreendidos por <span class="evento">${ev}</span>, mudando completamente o rumo da missão.`;
+      } else {
+        frase = `Um(a) <span class="sujeito">${s}</span> <span class="acao">${a}</span>, motivado por <span class="motivacao">${m}</span>, em um(a) <span class="local">${l}</span> que está <span class="estado">${e}</span>. Durante a investigação, o grupo terá a ajuda de um(a) <span class="aliado">${al}</span> e poderá encontrar um <span class="objeto">${o}</span>. Porém, em determinado momento os agentes serão surpreendidos por <span class="evento">${ev}</span>, mudando completamente o rumo da missão.`;
+      }
+
+      document.getElementById("missao").innerHTML = frase;
+
+      const quantidade = parseInt(document.getElementById("selectQuantidade").value);
+      const nex = parseInt(document.getElementById("selectNex").value);
+      const vdNumero = quantidade * nex;
+
+      const fraseVD = `Essa mesa contará com <strong>${quantidade}</strong> jogadores, todos com <strong>${nex}% NEX</strong>. Com isso, o combate equilibrado será <span class="vdNum">VD ${vdNumero}</span>.`;
+
+      document.getElementById("sessaoVD").innerHTML = fraseVD;
+    }
+
+    const btnGerar = document.getElementById("gerarBtn");
+    const btnCopiar = document.getElementById("copiarBtn");
+    const audioDado = document.getElementById("dadoAudio");
+
+    btnGerar.addEventListener("click", () => {
+      audioDado.currentTime = 0;
+      audioDado.play();
+      gerarMissao();
+    });
+
+    btnCopiar.addEventListener("click", () => {
+      const textoMissao = document.getElementById("missao").innerText;
+      const textoVD = document.getElementById("sessaoVD").innerText;
+      if (!textoMissao) {
+        alert("Gere uma missão antes de copiar!");
+        return;
+      }
+      const textoCompleto = textoMissao + "\n\n" + textoVD;
+      navigator.clipboard.writeText(textoCompleto).then(() => {
+        alert("Missão copiada!");
+      });
+    });
+  </script>
+</body>
+</html>
